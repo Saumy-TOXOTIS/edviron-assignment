@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edviron-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: edviron-frontend
+  template:
+    metadata:
+      labels:
+        app: edviron-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/your-org/edviron-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: VITE_API_BASE_URL
+              value: "http://edviron-backend/api"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edviron-frontend
+spec:
+  selector:
+    app: edviron-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

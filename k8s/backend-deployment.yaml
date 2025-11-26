@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edviron-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: edviron-backend
+  template:
+    metadata:
+      labels:
+        app: edviron-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/your-org/edviron-backend:latest
+          ports:
+            - containerPort: 4000
+          env:
+            - name: PORT
+              value: "4000"
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: edviron-secrets
+                  key: mongodb-uri
+            - name: JWT_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: edviron-secrets
+                  key: jwt-access
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: edviron-secrets
+                  key: jwt-refresh
+            - name: ALLOWED_ORIGINS
+              value: "http://edviron-frontend"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edviron-backend
+spec:
+  selector:
+    app: edviron-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 4000
