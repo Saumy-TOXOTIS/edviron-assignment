@@ -42,9 +42,3 @@ Node/Express + MongoDB backend and React frontend for a reporting and payments d
 - School scoping: non-super users are constrained to their school via middleware-applied filters.
 - Removed functionality: the optional developer portal/monitoring for failed transactions (UI and endpoints) was removed intentionally.
 - Deployment targets: Render blueprint kept; Docker Compose and K8s manifests added to satisfy container/K8s readiness.
-
-## GenAI / internet assistance (full disclosure)
-- Used ChatGPT for error explanations (morgan/chalk) and code understanding/generation ideas around `permissions.js`, `seed.js`, `auth.js`, `exportController.js`, `exportRoutes.js`, Docker/K8s setup, and AWS suggestions. Links:  
-  - https://chatgpt.com/share/69278b89-fa44-8010-a7fe-640d7fc4713f  
-  - https://chatgpt.com/share/69278bac-a6c4-8010-8ed1-b0ed9499a4f4
-- No other external repos or cursor tools were used beyond typical docs for reference.
